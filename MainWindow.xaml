@@ -1,0 +1,630 @@
+<Window x:Class="PoELauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Path of Exile Launcher"
+        Height="620"
+        Width="1280"
+        MinHeight="500"
+        MinWidth="980"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackgroundBrush}">
+    <Grid x:Name="RootGrid" Background="{DynamicResource BackgroundTextureBrush}">
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushTheme}" />
+                <Setter Property="Padding" Value="14,10" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Rectangle Fill="{DynamicResource ButtonTextureBrush}" Opacity="0.14" />
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.96" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Opacity" Value="0.88" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.45" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="NavButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+
+            <Style x:Key="HomeLogoButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.96" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Opacity" Value="0.88" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.45" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                <Setter Property="Background" Value="{DynamicResource PanelBackgroundStrongBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushTheme}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="10,8" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style TargetType="ListView">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                <Setter Property="Background" Value="{DynamicResource PanelBackgroundStrongBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushTheme}" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+
+            <Style TargetType="TabControl">
+                <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushTheme}" />
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+
+            <Style TargetType="TabItem">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                <Setter Property="Background" Value="{DynamicResource PanelBackgroundStrongBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushTheme}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="16,8" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Border x:Name="TabBorder"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}"
+                                    Margin="0,0,8,0"
+                                    SnapsToDevicePixels="True">
+                                <ContentPresenter ContentSource="Header"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource AccentBrush}" />
+                                    <Setter Property="Foreground" Value="White" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="TabBorder" Property="Opacity" Value="0.95" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="GridViewColumnHeader">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                <Setter Property="Background" Value="{DynamicResource PanelBackgroundStrongBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushTheme}" />
+                <Setter Property="BorderThickness" Value="0,0,1,1" />
+                <Setter Property="Padding" Value="10,8" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="12,10,12,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BackButton"
+                    Grid.Column="0"
+                    Width="34"
+                    Height="34"
+                    Padding="0"
+                    FontSize="18"
+                    Content="←"
+                    Visibility="Collapsed"
+                    Style="{StaticResource NavButtonStyle}"
+                    Click="HomeButton_Click" />
+
+            <Button x:Name="SettingsButton"
+                    Grid.Column="2"
+                    Width="34"
+                    Height="34"
+                    Padding="0"
+                    FontSize="16"
+                    Content="⚙"
+                    Style="{StaticResource NavButtonStyle}"
+                    Click="SettingsButton_Click" />
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="12,0,12,8">
+            <Grid x:Name="HomeView">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Margin="0,0,20,0"
+                        Style="{StaticResource HomeLogoButtonStyle}"
+                        Click="OpenPoe1Button_Click">
+                    <Image Source="/Assets/poe1_icon.png"
+                           Stretch="Uniform"
+                           Height="220" />
+                </Button>
+
+                <Button Grid.Column="1"
+                        Margin="20,0,0,0"
+                        Style="{StaticResource HomeLogoButtonStyle}"
+                        Click="OpenPoe2Button_Click">
+                    <Image Source="/Assets/poe2_icon.png"
+                           Stretch="Uniform"
+                           Height="220" />
+                </Button>
+            </Grid>
+
+            <Grid x:Name="GameView" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.2*" />
+                    <ColumnDefinition Width="1.15*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Margin="0,0,8,0"
+                        Padding="16"
+                        Background="{DynamicResource PanelBackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrushTheme}"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="14" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock x:Name="SelectedGameTitle"
+                                   Text="Path of Exile"
+                                   FontSize="28"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0,8,0,0"
+                                   Text="Game path"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                        <TextBlock x:Name="SelectedGamePath"
+                                   Grid.Row="2"
+                                   Margin="0,4,0,12"
+                                   TextWrapping="Wrap"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+
+                        <ListView x:Name="GameModsListView" Grid.Row="3">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="On" Width="55">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsEnabled, Mode=TwoWay}" HorizontalAlignment="Center" Click="ItemToggle_Click" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Mods" Width="180" DisplayMemberBinding="{Binding Name}" />
+                                    <GridViewColumn Header="File" Width="380" DisplayMemberBinding="{Binding FilePath}" />
+                                    <GridViewColumn Header="Arguments" Width="150" DisplayMemberBinding="{Binding Arguments}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                        <ListView x:Name="GameUrlsListView" Grid.Row="5">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="On" Width="55">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsEnabled, Mode=TwoWay}" HorizontalAlignment="Center" Click="ItemToggle_Click" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="URL" Width="720" DisplayMemberBinding="{Binding Url}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Margin="8,0,0,0"
+                        Padding="16"
+                        Background="{DynamicResource PanelBackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrushTheme}"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Actions"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+
+                        <Button Grid.Row="1"
+                                Margin="0,14,0,0"
+                                Height="48"
+                                Content="Start Game"
+                                Click="StartGameButton_Click" />
+
+                        <Button Grid.Row="2"
+                                Margin="0,10,0,0"
+                                Height="48"
+                                Content="Close Mods"
+                                Click="CloseModsButton_Click" />
+
+                        <Button x:Name="LabCompassButton"
+                                Grid.Row="3"
+                                Margin="0,10,0,0"
+                                Height="42"
+                                Width="150"
+                                HorizontalAlignment="Right"
+                                Content="Start Lab Compass"
+                                Visibility="Collapsed"
+                                Click="StartLabCompassButton_Click" />
+
+                        <Border Grid.Row="4"
+                                Margin="0,16,0,0"
+                                Padding="14"
+                                Background="{DynamicResource PanelBackgroundStrongBrush}"
+                                BorderBrush="{DynamicResource BorderBrushTheme}"
+                                BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Notes"
+                                           FontSize="15"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                                <TextBlock Margin="0,8,0,0"
+                                           Text="Enabled mods start with the game. Enabled URLs open in your default browser when you launch the game."
+                                           TextWrapping="Wrap"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource SecondaryTextBrush}" />
+                                <TextBlock Margin="0,10,0,0"
+                                           Text="Lab Compass is separate and only starts when you click its button while playing PoE 1."
+                                           TextWrapping="Wrap"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource SecondaryTextBrush}" />
+                                <TextBlock Margin="0,10,0,0"
+                                           Text="Jar tools need Java installed. AHK scripts need AutoHotkey installed. Settings are saved next to the launcher in settings.json."
+                                           TextWrapping="Wrap"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource SecondaryTextBrush}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Grid x:Name="SettingsView" Visibility="Collapsed">
+                <Border Padding="18"
+                        Background="{DynamicResource PanelBackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrushTheme}"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0"
+                                Margin="0,0,0,14"
+                                Padding="12"
+                                Background="{DynamicResource PanelBackgroundStrongBrush}"
+                                BorderBrush="{DynamicResource BorderBrushTheme}"
+                                BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="Background image"
+                                           FontSize="15"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+
+                                <TextBox x:Name="BackgroundImagePathTextBox"
+                                         Grid.Column="1"
+                                         Margin="14,0,0,0"
+                                         IsReadOnly="True" />
+
+                                <Button Grid.Column="2"
+                                        Width="100"
+                                        Margin="10,0,0,0"
+                                        Content="Browse"
+                                        Click="BrowseBackgroundImageButton_Click" />
+
+                                <Button Grid.Column="3"
+                                        Width="120"
+                                        Margin="10,0,0,0"
+                                        Content="Use Default"
+                                        Click="ResetBackgroundImageButton_Click" />
+                            </Grid>
+                        </Border>
+
+                        <TabControl Grid.Row="1" Background="{DynamicResource PanelBackgroundBrush}" Foreground="{DynamicResource PrimaryTextBrush}" BorderBrush="{DynamicResource BorderBrushTheme}">
+                        <TabItem Header="PoE 1">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <Grid Margin="8">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="Path to game executable"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                                    <Grid Grid.Row="1" Margin="0,10,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="Poe1PathTextBox" LostFocus="Poe1PathTextBox_LostFocus" />
+                                        <Button Grid.Column="1" Width="100" Margin="10,0,0,0" Content="Browse" Tag="poe1" Click="BrowseGamePathButton_Click" />
+                                        <Button Grid.Column="2" Width="110" Margin="10,0,0,0" Content="Auto Detect" Tag="poe1" Click="AutoDetectButton_Click" />
+                                    </Grid>
+
+                                    <Border Grid.Row="2" Margin="0,0,0,10" Padding="10" Background="{DynamicResource PanelBackgroundStrongBrush}" BorderBrush="{DynamicResource BorderBrushTheme}" BorderThickness="1">
+                                        <TextBlock Text="Mods"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                                    </Border>
+                                    <ListView x:Name="Poe1ModsListView" Grid.Row="3" Height="180" AllowDrop="True" Tag="poe1" PreviewDragOver="ModsListView_PreviewDragOver" Drop="ModsListView_Drop">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="On" Width="55">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding IsEnabled, Mode=TwoWay}" HorizontalAlignment="Center" Click="ItemToggle_Click" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding Name}" />
+                                                <GridViewColumn Header="File" Width="430" DisplayMemberBinding="{Binding FilePath}" />
+                                                <GridViewColumn Header="Arguments" Width="160" DisplayMemberBinding="{Binding Arguments}" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,12,0,18">
+                                        <Button Width="120" Height="42" Content="Add Mod" Tag="poe1" Click="AddModButton_Click" />
+                                        <Button Width="150" Height="42" Margin="10,0,0,0" Content="Remove Selected" Tag="poe1" Click="RemoveModButton_Click" />
+                                    </StackPanel>
+
+                                    <Border Grid.Row="5" Margin="0,0,0,10" Padding="10" Background="{DynamicResource PanelBackgroundStrongBrush}" BorderBrush="{DynamicResource BorderBrushTheme}" BorderThickness="1">
+                                        <TextBlock Text="URLs"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                                    </Border>
+                                    <ListView x:Name="Poe1UrlsListView" Grid.Row="6" Height="150">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="On" Width="55">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding IsEnabled, Mode=TwoWay}" HorizontalAlignment="Center" Click="ItemToggle_Click" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="URL" Width="820" DisplayMemberBinding="{Binding Url}" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                    <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="0,12,0,18">
+                                        <Button Width="120" Height="42" Content="Add URL" Tag="poe1" Click="AddUrlButton_Click" />
+                                        <Button Width="150" Height="42" Margin="10,0,0,0" Content="Remove Selected" Tag="poe1" Click="RemoveUrlButton_Click" />
+                                    </StackPanel>
+
+                                    <Border Grid.Row="8" Margin="0,0,0,10" Padding="10" Background="{DynamicResource PanelBackgroundStrongBrush}" BorderBrush="{DynamicResource BorderBrushTheme}" BorderThickness="1">
+                                        <TextBlock Text="Lab Compass"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                                    </Border>
+                                    <ListView x:Name="Poe1LabListView" Grid.Row="9" Height="150">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="On" Width="55">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding IsEnabled, Mode=TwoWay}" HorizontalAlignment="Center" Click="ItemToggle_Click" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding Name}" />
+                                                <GridViewColumn Header="File" Width="430" DisplayMemberBinding="{Binding FilePath}" />
+                                                <GridViewColumn Header="Arguments" Width="160" DisplayMemberBinding="{Binding Arguments}" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                    <StackPanel Grid.Row="10" Orientation="Horizontal" Margin="0,12,0,0">
+                                        <Button Width="120" Height="42" Content="Add Lab" Tag="poe1" Click="AddLabButton_Click" />
+                                        <Button Width="150" Height="42" Margin="10,0,0,0" Content="Remove Selected" Tag="poe1" Click="RemoveLabButton_Click" />
+                                    </StackPanel>
+                                </Grid>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <TabItem Header="PoE 2">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <Grid Margin="8">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="Path to game executable"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                                    <Grid Grid.Row="1" Margin="0,10,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="Poe2PathTextBox" LostFocus="Poe2PathTextBox_LostFocus" />
+                                        <Button Grid.Column="1" Width="100" Margin="10,0,0,0" Content="Browse" Tag="poe2" Click="BrowseGamePathButton_Click" />
+                                        <Button Grid.Column="2" Width="110" Margin="10,0,0,0" Content="Auto Detect" Tag="poe2" Click="AutoDetectButton_Click" />
+                                    </Grid>
+
+                                    <Border Grid.Row="2" Margin="0,0,0,10" Padding="10" Background="{DynamicResource PanelBackgroundStrongBrush}" BorderBrush="{DynamicResource BorderBrushTheme}" BorderThickness="1">
+                                        <TextBlock Text="Mods"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                                    </Border>
+                                    <ListView x:Name="Poe2ModsListView" Grid.Row="3" Height="200" AllowDrop="True" Tag="poe2" PreviewDragOver="ModsListView_PreviewDragOver" Drop="ModsListView_Drop">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="On" Width="55">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding IsEnabled, Mode=TwoWay}" HorizontalAlignment="Center" Click="ItemToggle_Click" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding Name}" />
+                                                <GridViewColumn Header="File" Width="430" DisplayMemberBinding="{Binding FilePath}" />
+                                                <GridViewColumn Header="Arguments" Width="160" DisplayMemberBinding="{Binding Arguments}" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,12,0,18">
+                                        <Button Width="120" Height="42" Content="Add Mod" Tag="poe2" Click="AddModButton_Click" />
+                                        <Button Width="150" Height="42" Margin="10,0,0,0" Content="Remove Selected" Tag="poe2" Click="RemoveModButton_Click" />
+                                    </StackPanel>
+
+                                    <Border Grid.Row="5" Margin="0,0,0,10" Padding="10" Background="{DynamicResource PanelBackgroundStrongBrush}" BorderBrush="{DynamicResource BorderBrushTheme}" BorderThickness="1">
+                                        <TextBlock Text="URLs"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                                    </Border>
+                                    <ListView x:Name="Poe2UrlsListView" Grid.Row="6" Height="180">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="On" Width="55">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding IsEnabled, Mode=TwoWay}" HorizontalAlignment="Center" Click="ItemToggle_Click" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="URL" Width="820" DisplayMemberBinding="{Binding Url}" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                    <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="0,12,0,0">
+                                        <Button Width="120" Height="42" Content="Add URL" Tag="poe2" Click="AddUrlButton_Click" />
+                                        <Button Width="150" Height="42" Margin="10,0,0,0" Content="Remove Selected" Tag="poe2" Click="RemoveUrlButton_Click" />
+                                    </StackPanel>
+                                </Grid>
+                            </ScrollViewer>
+                        </TabItem>
+                    </TabControl>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Row="2"
+                Margin="12,0,12,10"
+                Padding="10,6"
+                Background="{DynamicResource PanelBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrushTheme}"
+                BorderThickness="1">
+            <TextBlock x:Name="StatusTextBlock"
+                       Text="Ready."
+                       FontSize="13"
+                       Foreground="{DynamicResource SecondaryTextBrush}" />
+        </Border>
+    </Grid>
+</Window>
